@@ -70,6 +70,118 @@ type ContentRelationshipFieldWithData<
 }[Exclude<TCustomType[number], string>["id"]];
 
 /**
+ * Item in *Job Offer → technologies*
+ */
+export interface JobOfferDocumentDataTechnologiesItem {
+  /**
+   * technology field in *Job Offer → technologies*
+   *
+   * - **Field Type**: Content Relationship
+   * - **Placeholder**: *None*
+   * - **API ID Path**: job_offer.technologies[].technology
+   * - **Documentation**: https://prismic.io/docs/fields/content-relationship
+   */
+  technology: ContentRelationshipFieldWithData<
+    [{ id: "technology"; fields: ["name"] }]
+  >;
+}
+
+/**
+ * Item in *Job Offer → admin_emails*
+ */
+export interface JobOfferDocumentDataAdminEmailsItem {
+  /**
+   * email field in *Job Offer → admin_emails*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: job_offer.admin_emails[].email
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  email: prismic.KeyTextField;
+}
+
+/**
+ * Content for Job Offer documents
+ */
+interface JobOfferDocumentData {
+  /**
+   * title field in *Job Offer*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: job_offer.title
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * start_date field in *Job Offer*
+   *
+   * - **Field Type**: Date
+   * - **Placeholder**: *None*
+   * - **API ID Path**: job_offer.start_date
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/date
+   */
+  start_date: prismic.DateField;
+
+  /**
+   * description field in *Job Offer*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: job_offer.description
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/rich-text
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * technologies field in *Job Offer*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: job_offer.technologies[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+   */
+  technologies: prismic.GroupField<
+    Simplify<JobOfferDocumentDataTechnologiesItem>
+  >;
+
+  /**
+   * admin_emails field in *Job Offer*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: job_offer.admin_emails[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
+   */
+  admin_emails: prismic.GroupField<
+    Simplify<JobOfferDocumentDataAdminEmailsItem>
+  >;
+}
+
+/**
+ * Job Offer document from Prismic
+ *
+ * - **API ID**: `job_offer`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/content-modeling
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type JobOfferDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<JobOfferDocumentData>,
+    "job_offer",
+    Lang
+  >;
+
+/**
  * Content for technology documents
  */
 interface TechnologyDocumentData {
@@ -101,7 +213,7 @@ export type TechnologyDocument<Lang extends string = string> =
     Lang
   >;
 
-export type AllDocumentTypes = TechnologyDocument;
+export type AllDocumentTypes = JobOfferDocument | TechnologyDocument;
 
 declare module "@prismicio/client" {
   interface CreateClient {
@@ -124,6 +236,10 @@ declare module "@prismicio/client" {
 
   namespace Content {
     export type {
+      JobOfferDocument,
+      JobOfferDocumentData,
+      JobOfferDocumentDataTechnologiesItem,
+      JobOfferDocumentDataAdminEmailsItem,
       TechnologyDocument,
       TechnologyDocumentData,
       AllDocumentTypes,
