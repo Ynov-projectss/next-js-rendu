@@ -53,7 +53,6 @@ export function getOfferTechnologies(offer: Content.JobOfferDocument) {
     .map((item) => item.technology)
     .filter(isFilled.contentRelationship)
     .map((technology) => ({
-      id: technology.id,
       uid: technology.uid ?? technology.id,
       name: technology.data?.name ?? "Technologie",
     }));
@@ -61,6 +60,12 @@ export function getOfferTechnologies(offer: Content.JobOfferDocument) {
 
 export function getOfferTechnologyNames(offer: Content.JobOfferDocument) {
   return getOfferTechnologies(offer).map((technology) => technology.name);
+}
+
+export function getOfferAdminEmails(offer: Content.JobOfferDocument) {
+  return offer.data.admin_emails
+    .map((item) => item.email?.trim())
+    .filter((email): email is string => Boolean(email));
 }
 
 export function formatStartDate(date: string | null) {
