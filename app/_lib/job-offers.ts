@@ -33,6 +33,17 @@ export async function getJobOfferUIDs() {
     .filter((uid): uid is string => Boolean(uid));
 }
 
+export async function getExistingJobOfferUIDs(uids: string[]) {
+  if (uids.length === 0) {
+    return [];
+  }
+
+  const requestedUIDs = new Set(uids);
+  const availableUIDs = await getJobOfferUIDs();
+
+  return availableUIDs.filter((uid) => requestedUIDs.has(uid));
+}
+
 export async function getTechnologyByUID(uid: string) {
   const client = createClient();
 

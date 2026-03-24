@@ -6,7 +6,7 @@ import {
 } from "@/app/_lib/job-offers";
 
 export type OfferPreview = {
-  id: string;
+  uid: string;
   href: string;
   title: string;
   startDate: string;
@@ -23,7 +23,7 @@ export function mapJobOfferToOfferPreview(
   const uid = offer.uid ?? offer.id;
 
   return {
-    id: offer.id,
+    uid,
     href: `/offres/${uid}`,
     title: offer.data.title ?? "Offre sans titre",
     startDate: formatStartDate(offer.data.start_date),

@@ -3,6 +3,7 @@ import { PrismicPreview } from "@prismicio/next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { AppHeader } from "@/components/header/AppHeader";
+import { SavedOffersSync } from "@/components/providers/SavedOffersSync";
 import { repositoryName } from "@/prismicio";
 
 import "./globals.css";
@@ -34,6 +35,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <AppHeader />
+        <SavedOffersSync />
         <div className="flex-1">{children}</div>
         <PrismicPreview repositoryName={repositoryName} />
       </body>
