@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { Bookmark, CalendarDays, CodeXml } from "lucide-react";
+import { CalendarDays, CodeXml } from "lucide-react";
 
 import type { OfferPreview } from "@/components/offers/offerPreview";
+import { SaveOfferButton } from "@/components/offers/SaveOfferButton";
 
 type OfferCardProps = {
   offer: OfferPreview;
@@ -9,11 +10,20 @@ type OfferCardProps = {
 
 export function OfferCard({ offer }: OfferCardProps) {
   return (
-    <Link href={offer.href} className="block">
-      <article className="bg-white p-4 shadow-sm transition-shadow hover:shadow-md">
+    <article className="relative cursor-pointer bg-white p-4 shadow-sm transition-shadow hover:shadow-md">
+      <Link
+        href={offer.href}
+        aria-label={`Voir l'offre ${offer.title}`}
+        className="absolute inset-0 z-10 cursor-pointer"
+      />
+
+      <div className="relative z-20 pointer-events-none">
         <div className="flex items-start justify-between gap-4">
           <h3 className="text-xl font-semibold text-[#0F1941]">{offer.title}</h3>
-          <Bookmark className="mt-1 h-4 w-4 text-[#0F1941]" strokeWidth={1.8} />
+          <SaveOfferButton
+            offer={offer}
+            className="pointer-events-auto relative z-30 inline-flex items-center justify-center text-[#0F1941]"
+          />
         </div>
 
         <div className="mt-4 space-y-2 text-sm text-[#2D7BF4]">
@@ -28,7 +38,7 @@ export function OfferCard({ offer }: OfferCardProps) {
         </div>
 
         <p className="mt-5 text-sm leading-6 text-[#1E1B18]">{offer.description}</p>
-      </article>
-    </Link>
+      </div>
+    </article>
   );
 }

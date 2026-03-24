@@ -11,6 +11,8 @@ import {
   getOfferTechnologies,
 } from "@/app/_lib/job-offers";
 import { OfferApplicationForm } from "@/components/offers/OfferApplicationForm";
+import { SaveOfferButton } from "@/components/offers/SaveOfferButton";
+import { mapJobOfferToOfferPreview } from "@/components/offers/offerPreview";
 import { TechnologyTagList } from "@/components/offers/TechnologyTagList";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 
@@ -55,6 +57,7 @@ export default async function JobOfferPage({ params }: JobOfferPageProps) {
   }
 
   const technologies = getOfferTechnologies(offer);
+  const offerPreview = mapJobOfferToOfferPreview(offer);
 
   return (
     <main className="mx-auto flex w-full flex-1 flex-col px-6 py-10 md:px-12 md:py-12">
@@ -66,7 +69,16 @@ export default async function JobOfferPage({ params }: JobOfferPageProps) {
         <span>Voir toutes les offres</span>
       </Link>
 
-      <SectionTitle title={offer.data.title ?? "Offre"} as="h1" />
+      <SectionTitle
+        title={offer.data.title ?? "Offre"}
+        as="h1"
+        rightContent={
+          <SaveOfferButton
+            offer={offerPreview}
+            className="inline-flex items-center justify-center pb-1 text-[#0F1941]"
+          />
+        }
+      />
 
       <div className="mt-4 max-w-5xl space-y-4">
         <p className="flex items-center gap-2 text-sm font-medium text-[#2175D9]">
