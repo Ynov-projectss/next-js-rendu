@@ -2,7 +2,7 @@ import { asText, type Content } from "@prismicio/client";
 
 import {
   formatStartDate,
-  getOfferTechnologyNames,
+  getOfferTechnologies,
 } from "@/app/_lib/job-offers";
 
 export type OfferPreview = {
@@ -10,7 +10,10 @@ export type OfferPreview = {
   href: string;
   title: string;
   startDate: string;
-  technologies: string[];
+  technologies: {
+    uid: string;
+    name: string;
+  }[];
   description: string;
 };
 
@@ -24,7 +27,7 @@ export function mapJobOfferToOfferPreview(
     href: `/offres/${uid}`,
     title: offer.data.title ?? "Offre sans titre",
     startDate: formatStartDate(offer.data.start_date),
-    technologies: getOfferTechnologyNames(offer),
+    technologies: getOfferTechnologies(offer),
     description: asText(offer.data.description).slice(0, 140).trim(),
   };
 }

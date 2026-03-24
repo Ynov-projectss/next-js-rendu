@@ -6,10 +6,19 @@ import {
   mapJobOfferToOfferPreview,
   type OfferPreview,
 } from "@/components/offers/offerPreview";
+import { TechnologyTagList } from "@/components/offers/TechnologyTagList";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 
 function getTechnologyTags(offers: OfferPreview[]) {
-  return [...new Set(offers.flatMap((offer) => offer.technologies))];
+  const seen = new Map<string, OfferPreview["technologies"][number]>();
+
+  for (const offer of offers) {
+    for (const technology of offer.technologies) {
+      seen.set(technology.uid, technology);
+    }
+  }
+
+  return [...seen.values()];
 }
 
 export default async function OffersPage() {
@@ -30,15 +39,8 @@ export default async function OffersPage() {
         }
       />
 
-      <div className="mt-4 flex flex-wrap gap-2">
-        {technologies.map((technology) => (
-          <span
-            key={technology}
-            className="border border-[#2175D9] px-3 py-1 text-xs font-medium text-[#2175D9]"
-          >
-            {technology}
-          </span>
-        ))}
+      <div className="mt-4">
+        <TechnologyTagList technologies={technologies} />
       </div>
 
       <div className="mt-9">

@@ -33,11 +33,34 @@ export async function getJobOfferUIDs() {
     .filter((uid): uid is string => Boolean(uid));
 }
 
-export function getOfferTechnologyNames(offer: Content.JobOfferDocument) {
+export async function getTechnologyByUID(uid: string) {
+  const client = createClient();
+
+  return client.getByUID("technology", uid);
+}
+
+export async function getTechnologyUIDs() {
+  const client = createClient();
+  const technologies = await client.getAllByType("technology");
+
+  return technologies
+    .map((technology) => technology.uid)
+    .filter((uid): uid is string => Boolean(uid));
+}
+
+export function getOfferTechnologies(offer: Content.JobOfferDocument) {
   return offer.data.technologies
     .map((item) => item.technology)
     .filter(isFilled.contentRelationship)
-    .map((technology) => technology.data?.name ?? "Technologie");
+    .map((technology) => ({
+      id: technology.id,
+      uid: technology.uid ?? technology.id,
+      name: technology.data?.name ?? "Technologie",
+    }));
+}
+
+export function getOfferTechnologyNames(offer: Content.JobOfferDocument) {
+  return getOfferTechnologies(offer).map((technology) => technology.name);
 }
 
 export function formatStartDate(date: string | null) {

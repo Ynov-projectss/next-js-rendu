@@ -23,7 +23,7 @@ export function OfferCard({ offer }: OfferCardProps) {
           </p>
           <p className="flex items-start gap-2">
             <CodeXml className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={1.8} />
-            <span>{offer.technologies.join(", ")}</span>
+            <span>{offer.technologies.map((technology) => technology.name).join(", ")}</span>
           </p>
         </div>
 
