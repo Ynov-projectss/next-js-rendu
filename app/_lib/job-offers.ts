@@ -19,6 +19,16 @@ export async function getJobOffers(limit?: number) {
   });
 }
 
+export async function getPaginatedJobOffers(page: number, pageSize: number) {
+  const client = createClient();
+
+  return client.getByType("job_offer", {
+    orderings: [{ field: "my.job_offer.start_date", direction: "desc" }],
+    page,
+    pageSize,
+  });
+}
+
 export async function getJobOfferByUID(uid: string) {
   const client = createClient();
 
