@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { Bookmark, CalendarDays, CodeXml } from "lucide-react";
 
-import type { HomeOffer } from "@/components/offers/OffersSection";
+import type { OfferPreview } from "@/components/offers/offerPreview";
 
 type OfferCardProps = {
-  offer: HomeOffer;
+  offer: OfferPreview;
 };
 
 export function OfferCard({ offer }: OfferCardProps) {

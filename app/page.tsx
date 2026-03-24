@@ -1,36 +1,15 @@
-import { asText, type Content } from "@prismicio/client";
+import Link from "next/link";
 import Image from "next/image";
 
-import {
-  formatStartDate,
-  getJobOffers,
-  getOfferTechnologyNames,
-} from "@/app/_lib/job-offers";
-import {
-  OffersSection,
-  type HomeOffer,
-} from "@/components/offers/OffersSection";
+import { getJobOffers } from "@/app/_lib/job-offers";
+import { OffersSection } from "@/components/offers/OffersSection";
+import { mapJobOfferToOfferPreview } from "@/components/offers/offerPreview";
 import { SectionTitle } from "@/components/ui/SectionTitle";
 
-const HOMEPAGE_OFFERS_LIMIT = 20;
 const HOMEPAGE_INITIAL_VISIBLE_OFFERS = 6;
 
-function mapOfferForHome(offer: Content.JobOfferDocument): HomeOffer {
-  const uid = offer.uid ?? offer.id;
-
-  return {
-    id: offer.id,
-    href: `/offres/${uid}`,
-    title: offer.data.title ?? "Offre sans titre",
-    startDate: formatStartDate(offer.data.start_date),
-    technologies: getOfferTechnologyNames(offer),
-    description: asText(offer.data.description).slice(0, 140).trim(),
-  };
-}
-
 export default async function Home() {
-  const offers = await getJobOffers(HOMEPAGE_OFFERS_LIMIT);
-  const homeOffers = offers.map(mapOfferForHome);
+  const homeOffers = (await getJobOffers(HOMEPAGE_INITIAL_VISIBLE_OFFERS)).map(mapJobOfferToOfferPreview);
 
   return (
     <main className="mx-auto flex w-full flex-1 flex-col pb-12">
@@ -50,10 +29,16 @@ export default async function Home() {
         <SectionTitle title="Nos dernieres opportunites" as="h1" />
 
         <div className="mt-9">
-          <OffersSection
-            offers={homeOffers}
-            initialVisibleCount={HOMEPAGE_INITIAL_VISIBLE_OFFERS}
-          />
+          <OffersSection offers={homeOffers} />
+        </div>
+
+        <div className="mt-9 flex justify-center">
+          <Link
+            href="/offres"
+            className="bg-[#2175D9] px-4 py-2 text-sm font-medium text-white"
+          >
+            Voir toutes les offres
+          </Link>
         </div>
       </section>
     </main>
